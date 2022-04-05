@@ -1,6 +1,8 @@
 const express = require('express');
 const checklistRouter = require('./src/routes/checklist')
 const app = express();
+require('./config/database')
+
 app.listen((3000), ()=>{
     console.log("Servidor iniciado!");
 });

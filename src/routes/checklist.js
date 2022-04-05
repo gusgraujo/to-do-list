@@ -14,4 +14,20 @@ router.post('/',(req,res) =>{
     res.status(200).json(req.body);
 });
 
+router.get('/:id',(req,res) =>{
+    console.log(req.params.id);
+    res.send(`ID: ${req.params.id}`);
+});
+
+
+router.put('/:id',(req,res) =>{
+    console.log(req.params.id);
+    res.send(`PUT ID: ${req.params.id}`);
+});
+
+router.delete('/:id',(req,res) =>{
+    console.log(req.params.id);
+    res.send(`Delete ID: ${req.params.id}`);
+});
+
 module.exports = router;
