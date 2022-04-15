@@ -7,7 +7,7 @@ const taskSchema = mongoose.Schema({
     checklist:{
         type: mongoose.Schema.Types.ObjectId,
         ref:'Checklist',
-        required:true
+        required:false
     }
 });
 

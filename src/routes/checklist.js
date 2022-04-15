@@ -1,4 +1,5 @@
 const express = require('express');
+const checklist = require('../models/checklist');
 
 const router = express.Router();
 
@@ -8,29 +9,45 @@ const Checklist= require('../models/checklist');
 router.get('/', async (req,res) => {
     try{
         let checklists = await Checklist.find({});
-        res.status(200).json(checklists);
+        res.status(200).render('checklists/index',{checklists: checklists});
     }catch(error){
-        res.status(422).json(error);
+        res.status(200).render('checklists/error',{error: 'Erro ao exibir as listas'});
+
     }
 })
 
+router.get('/new', async(req,res) =>{
+    try {
+        let checklist = new Checklist();
+        res.status(200).render('checklists/new',{checklist:checklist})
+    } catch (error) {
+        res.status(500).render('pages/error', {error: 'Erro ao carregar formulário'})
+        
+    }
+
+})
+
+
 router.post('/', async (req,res) =>{
-    let { name } = req.body;
+    let { name } = req.body.checklist;
+    let checklist = new Checklist({name});
     try{
-        let checklist = await Checklist.create({name})
-        res.status(200).json(checklist);
+        await checklist.save();
+        res.redirect('/checklists')
     }catch(error){
-        res.status(422).json(error);
+        res.status(422).render('checklists/new', {checklists: {...checklist,error}})
     }
     
 });
 
-router.get('/:id',async (req,res) =>{
+router.get('/:id', async (req,res) =>{
     try{
-        let checklists = await Checklist.findById(req.params.id);
-        res.status(200).json(checklists);
+        let checklist = await Checklist.findById(req.params.id);
+        res.status(200).render('checklists/show', {checklist: checklist});
+
     }catch(error){
-        res.status(422).json(error);
+        res.status(500).render('pages/error', {error: 'Erro ao carregar formulário'})
+
     }
 });
 
